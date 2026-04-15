@@ -1,33 +1,87 @@
 # LLM Evaluator Agent
 
-Production-ready, minimal GenAI system that compares two prompt strategies and evaluates output quality with a structured rubric.
+A production-ready Generative AI system that compares multiple prompt strategies and evaluates LLM outputs using structured scoring metrics.
 
-## What this demonstrates
+This project simulates how real-world GenAI systems are built, evaluated, and iteratively improved using prompt engineering and data-driven feedback loops.
 
-- Multi-agent flow:
-  - Response Generation Agent A (baseline prompt)
-  - Response Generation Agent B (structured prompt)
-  - Evaluation Agent (scores clarity, completeness, correctness)
-- Structured JSON evaluation outputs
-- Prompt engineering impact (A vs B)
-- Feedback loop (thumbs up/down persisted with context)
-- Product analytics (query count, common queries, average scores, winner distribution)
+---
 
-## Tech Stack
+## 🚀 Key Highlights
 
-- Backend: FastAPI + OpenAI API
-- Frontend: React (Vite)
-- Storage: Local JSON files (`backend/data/*.json`)
+* **Multi-Agent Architecture**
 
-## Project Structure
+  * Response Generation Agent A (baseline prompt)
+  * Response Generation Agent B (structured prompt)
+  * Evaluation Agent (LLM-based scoring + comparison)
 
-- `backend/app/prompts.py` -> all editable prompts
-- `backend/app/agents.py` -> generation + evaluation agent orchestration
-- `backend/app/main.py` -> API routes
-- `backend/app/storage.py` -> feedback/evaluation persistence + analytics
-- `frontend/src/App.jsx` -> UI and API integration
+* **LLM Evaluation Framework**
 
-## Backend Setup
+  * Scores outputs across:
+
+    * Clarity
+    * Completeness
+    * Correctness
+  * Selects best response with reasoning
+
+* **Prompt Engineering & Iteration**
+
+  * Compare multiple prompt strategies (A vs B)
+  * Track performance using evaluation metrics
+  * Iterate prompts using analytics + feedback
+
+* **Feedback Loop**
+
+  * Capture user feedback (👍 / 👎)
+  * Store query, responses, evaluation, and context
+
+* **Product Analytics Layer**
+
+  * Total queries
+  * Most common queries
+  * Average evaluation scores
+  * Winner distribution (A vs B)
+
+---
+
+## 🧠 Why This Project Matters
+
+Modern GenAI systems are not just about generating responses — they require:
+
+* evaluating output quality
+* refining prompts iteratively
+* measuring performance using data
+
+This system demonstrates a full pipeline for:
+**generation → evaluation → feedback → improvement**
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend:** FastAPI + OpenAI API
+* **Frontend:** React (Vite)
+* **Storage:** Local JSON (lightweight analytics + feedback persistence)
+
+---
+
+## 📁 Project Structure
+
+```
+backend/app/
+├── prompts.py      # Prompt definitions (easy to modify)
+├── agents.py       # Generation + evaluation logic
+├── main.py         # API routes
+├── storage.py      # Feedback + analytics storage
+
+frontend/src/
+├── App.jsx         # UI + API integration
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### Backend
 
 ```bash
 cd backend
@@ -37,20 +91,22 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Set your OpenAI key in `.env`:
+Set environment variables:
 
-```bash
+```
 OPENAI_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4o-mini
 ```
 
-Run backend:
+Run server:
 
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Frontend Setup
+---
+
+### Frontend
 
 ```bash
 cd frontend
@@ -59,35 +115,82 @@ cp .env.example .env
 npm run dev
 ```
 
-Open the Vite URL (usually `http://localhost:5173`).
+Open:
+http://localhost:5173
 
-## Core API
+---
 
-- `POST /api/evaluate`
-  - Input: `{ "query": "..." }`
-  - Output:
-    - `response_a`
-    - `response_b`
-    - `evaluation`:
-      - `clarity_scores`
-      - `completeness_scores`
-      - `correctness_scores`
-      - `winner`
-      - `reasoning`
-- `POST /api/feedback`
-  - Stores thumbs up/down feedback with query, responses, evaluation, timestamp
-- `GET /api/analytics`
-  - Returns total queries, common queries, average scores, winner distribution
+## 🔌 Core API
 
-## Prompt Iteration Workflow
+### POST /api/evaluate
 
-1. Edit prompts in `backend/app/prompts.py`.
-2. Run sample queries from UI.
-3. Compare winner distribution and average scores in analytics.
-4. Capture user feedback via thumbs up/down.
-5. Iterate prompts and re-evaluate.
+Input:
 
-## Notes
+```json
+{ "query": "Explain why loans get rejected" }
+```
 
-- If `OPENAI_API_KEY` is not set, backend falls back to deterministic mock responses so the pipeline remains testable.
-- The architecture is intentionally lightweight and easy to extend (e.g., add more generation variants, stricter evaluator schema, persistent DB later).
+Output:
+
+* response_a
+* response_b
+* evaluation:
+
+  * clarity_scores
+  * completeness_scores
+  * correctness_scores
+  * winner
+  * reasoning
+
+---
+
+### POST /api/feedback
+
+Stores:
+
+* query
+* responses
+* evaluation
+* user feedback
+* timestamp
+
+---
+
+### GET /api/analytics
+
+Returns:
+
+* total queries
+* common queries
+* average scores
+* winner distribution
+
+---
+
+## 🔁 Prompt Iteration Workflow
+
+1. Modify prompts in `prompts.py`
+2. Run queries via UI
+3. Compare evaluation scores (A vs B)
+4. Analyze trends via analytics endpoint
+5. Refine prompts and repeat
+
+---
+
+## ⚡ Design Philosophy
+
+* Lightweight and fast to iterate
+* Minimal infrastructure, maximum signal
+* Focus on evaluation and improvement (not just generation)
+
+---
+
+## 📝 Notes
+
+* Falls back to deterministic mock responses if API key is missing (ensures full pipeline works)
+* Easily extensible:
+
+  * Add more prompt variants
+  * Improve evaluation rubric
+  * Replace storage with database
+  * Introduce streaming / real-time feedback
