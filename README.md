@@ -6,40 +6,45 @@ This project simulates how real-world GenAI systems are built, evaluated, and it
 
 ---
 
+## 🌐 Live Deployment
+
+- **Frontend (Vercel):** https://llm-evaluator-agent.vercel.app  
+- **Backend (Render):** https://llm-evaluator-agent.onrender.com  
+
+---
+
 ## 🚀 Key Highlights
 
-* **Multi-Agent Architecture**
+### Multi-Agent Architecture
+- **Agent A** → Baseline prompt response  
+- **Agent B** → Structured prompt response  
+- **Evaluator Agent** → LLM-based scoring + comparison  
 
-  * Response Generation Agent A (baseline prompt)
-  * Response Generation Agent B (structured prompt)
-  * Evaluation Agent (LLM-based scoring + comparison)
+### LLM Evaluation Framework
+- Scores outputs across:
+  - Clarity  
+  - Completeness  
+  - Correctness  
+- Selects best response with reasoning  
 
-* **LLM Evaluation Framework**
+### Prompt Engineering & Iteration
+- Compare multiple prompt strategies (A vs B)  
+- Track performance using evaluation metrics  
+- Iterate prompts using analytics + feedback  
 
-  * Scores outputs across:
+### Feedback Loop
+- Capture user feedback (👍 / 👎)  
+- Store:
+  - Query  
+  - Responses  
+  - Evaluation  
+  - Context  
 
-    * Clarity
-    * Completeness
-    * Correctness
-  * Selects best response with reasoning
-
-* **Prompt Engineering & Iteration**
-
-  * Compare multiple prompt strategies (A vs B)
-  * Track performance using evaluation metrics
-  * Iterate prompts using analytics + feedback
-
-* **Feedback Loop**
-
-  * Capture user feedback (👍 / 👎)
-  * Store query, responses, evaluation, and context
-
-* **Product Analytics Layer**
-
-  * Total queries
-  * Most common queries
-  * Average evaluation scores
-  * Winner distribution (A vs B)
+### Product Analytics Layer
+- Total queries  
+- Most common queries  
+- Average evaluation scores  
+- Winner distribution (A vs B)  
 
 ---
 
@@ -47,20 +52,21 @@ This project simulates how real-world GenAI systems are built, evaluated, and it
 
 Modern GenAI systems are not just about generating responses — they require:
 
-* evaluating output quality
-* refining prompts iteratively
-* measuring performance using data
+- evaluating output quality  
+- refining prompts iteratively  
+- measuring performance using data  
 
 This system demonstrates a full pipeline for:
+
 **generation → evaluation → feedback → improvement**
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Backend:** FastAPI + OpenAI API
-* **Frontend:** React (Vite)
-* **Storage:** Local JSON (lightweight analytics + feedback persistence)
+- **Backend:** FastAPI + Groq API  
+- **Frontend:** React (Vite)  
+- **Storage:** Local JSON (analytics + feedback persistence)  
 
 ---
 
@@ -68,15 +74,12 @@ This system demonstrates a full pipeline for:
 
 ```
 backend/app/
-├── prompts.py      # Prompt definitions (easy to modify)
-├── agents.py       # Generation + evaluation logic
-├── main.py         # API routes
-├── storage.py      # Feedback + analytics storage
-
+├── prompts.py # Prompt definitions (easy to modify)
+├── agents.py # Generation + evaluation logic
+├── main.py # API routes
+├── storage.py # Feedback + analytics storage
 frontend/src/
-├── App.jsx         # UI + API integration
-```
-
+├── App.jsx # UI + API integration
 ---
 
 ## ⚙️ Setup Instructions
@@ -94,8 +97,8 @@ cp .env.example .env
 Set environment variables:
 
 ```
-OPENAI_API_KEY=your_key_here
-OPENAI_MODEL=gpt-4o-mini
+GROQ_API_KEY=your_key_here
+GROQ_MODEL=llama3-70b-8192
 ```
 
 Run server:
