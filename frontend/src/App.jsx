@@ -1,6 +1,22 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
+// animation presets
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 function ScoreRow({ label, a, b }) {
   return (
@@ -13,7 +29,9 @@ function ScoreRow({ label, a, b }) {
 }
 
 export default function App() {
-  const [query, setQuery] = useState("What is retrieval-augmented generation?");
+  const [query, setQuery] = useState(
+    "What is retrieval-augmented generation?"
+  );
   const [result, setResult] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -72,60 +90,104 @@ export default function App() {
 
   return (
     <div className={`container ${darkMode ? "dark" : "light"}`}>
-      
       {/* HEADER */}
-      <div className="header">
+      <motion.div
+        className="header"
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+      >
         <div>
           <h1>LLM Evaluator</h1>
           <p className="subtitle">
-            Compare outputs from multiple LLMs and evaluate quality
+            Compare outputs from multiple LLMs intelligently
           </p>
         </div>
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
           onClick={() => setDarkMode(!darkMode)}
           className="toggle-btn"
         >
           {darkMode ? "🌙 Dark" : "🌞 Light"}
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
-      {/* INPUT */}
-      <div className="input-panel">
-        <textarea
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          rows={4}
-          placeholder="Enter your query..."
-        />
+      {/* HERO SECTION */}
+      <motion.div
+        className="hero"
+        initial="hidden"
+        animate="visible"
+        variants={stagger}
+      >
+        <motion.h2 variants={fadeUp}>
+          Ask Better Questions.
+        </motion.h2>
 
-        <div className="button-row">
-          <button onClick={runEvaluation} disabled={loading}>
-            {loading ? "Evaluating..." : "Evaluate"}
-          </button>
-        </div>
-      </div>
+        <motion.p variants={fadeUp} className="hero-sub">
+          Instantly compare AI responses and evaluate quality.
+        </motion.p>
+
+        <motion.div variants={fadeUp} className="input-panel">
+          <textarea
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            rows={4}
+            placeholder="Ask anything..."
+          />
+
+          <div className="button-row">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={runEvaluation}
+              disabled={loading}
+            >
+              {loading ? "Evaluating..." : "Evaluate"}
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
 
       {/* RESPONSES */}
       {result && (
-        <div className="responses">
-          <section>
+        <motion.div
+          className="responses"
+          initial="hidden"
+          animate="visible"
+          variants={stagger}
+        >
+          <motion.section
+            variants={fadeUp}
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
             <h2>Response A</h2>
             <p className="model-name">{result.model_a}</p>
             <pre>{result.response_a}</pre>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section
+            variants={fadeUp}
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
             <h2>Response B</h2>
             <p className="model-name">{result.model_b}</p>
             <pre>{result.response_b}</pre>
-          </section>
-        </div>
+          </motion.section>
+        </motion.div>
       )}
 
       {/* EVALUATION */}
       {result && (
-        <div className="evaluation">
+        <motion.div
+          className="evaluation"
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+        >
           <h2>Evaluation</h2>
 
           <ScoreRow
@@ -133,13 +195,11 @@ export default function App() {
             a={result.evaluation.clarity_scores.a}
             b={result.evaluation.clarity_scores.b}
           />
-
           <ScoreRow
             label="Completeness"
             a={result.evaluation.completeness_scores.a}
             b={result.evaluation.completeness_scores.b}
           />
-
           <ScoreRow
             label="Correctness"
             a={result.evaluation.correctness_scores.a}
@@ -157,19 +217,28 @@ export default function App() {
           <p>{result.evaluation.reasoning}</p>
 
           <div className="button-row">
-            <button onClick={() => submitFeedback("up")}>👍</button>
-            <button onClick={() => submitFeedback("down")}>👎</button>
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => submitFeedback("up")}>
+              👍
+            </motion.button>
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => submitFeedback("down")}>
+              👎
+            </motion.button>
           </div>
 
           {feedbackMessage && (
             <p className="feedback-msg">{feedbackMessage}</p>
           )}
-        </div>
+        </motion.div>
       )}
 
       {/* ANALYTICS */}
       {analytics && (
-        <div className="analytics">
+        <motion.div
+          className="analytics"
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+        >
           <h2>Analytics</h2>
 
           <p>Total queries: {analytics.total_queries}</p>
@@ -195,7 +264,7 @@ export default function App() {
             {analytics.average_evaluation_scores.correctness.a} / B{" "}
             {analytics.average_evaluation_scores.correctness.b}
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );
