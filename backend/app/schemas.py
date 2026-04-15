@@ -27,6 +27,8 @@ class EvaluateResponse(BaseModel):
     response_a: str
     response_b: str
     evaluation: EvaluationResult
+    model_a: str
+    model_b: str
     prompt_version: str = PROMPT_VERSION
     user_feedback: Literal["up", "down"] | None = None
     timestamp: datetime

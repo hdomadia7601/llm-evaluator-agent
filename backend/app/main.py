@@ -39,15 +39,19 @@ def evaluate(req: EvaluateRequest) -> EvaluateResponse:
     response_a = generate_response_a(req.query)
     response_b = generate_response_b(req.query)
     evaluation = evaluate_responses(req.query, response_a, response_b)
+
     record = EvaluateResponse(
         query=req.query,
         response_a=response_a,
         response_b=response_b,
         evaluation=evaluation,
+        model_a="llama-3.1-8b-instant",
+        model_b="mixtral-8x7b-32768",
         prompt_version=PROMPT_VERSION,
         user_feedback=None,
         timestamp=datetime.now(timezone.utc),
     )
+
     save_evaluation(record)
     return record
 
