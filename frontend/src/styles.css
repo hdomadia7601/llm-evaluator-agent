@@ -5,8 +5,18 @@
 body {
   margin: 0;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* LIGHT MODE */
+.light {
   background: #f8fafc;
   color: #0f172a;
+}
+
+/* DARK MODE */
+.dark {
+  background: #0f172a;
+  color: #e2e8f0;
 }
 
 .container {
@@ -15,35 +25,63 @@ body {
   padding: 24px;
 }
 
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-btn {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* TEXT */
 h1 {
   margin-bottom: 8px;
 }
 
 .subtitle {
   margin-top: 0;
-  color: #475569;
+  color: #64748b;
 }
 
+/* CARDS */
 .input-panel,
 .evaluation,
 .analytics,
 .responses section {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 14px;
+  border-radius: 12px;
+  padding: 16px;
   margin-top: 16px;
+  transition: 0.2s ease;
 }
 
+/* DARK MODE CARDS */
+.dark .input-panel,
+.dark .evaluation,
+.dark .analytics,
+.dark .responses section {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+/* TEXTAREA */
 textarea {
   width: 100%;
   resize: vertical;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px;
   font-size: 14px;
 }
 
+/* BUTTONS */
 .button-row {
   display: flex;
   gap: 10px;
@@ -51,12 +89,17 @@ textarea {
 }
 
 button {
-  border: 1px solid #1d4ed8;
+  border: none;
   background: #2563eb;
   color: white;
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 
 button:disabled {
@@ -64,20 +107,29 @@ button:disabled {
   opacity: 0.6;
 }
 
+/* RESPONSES */
 .responses {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
   margin-top: 16px;
 }
 
 pre {
   white-space: pre-wrap;
   margin: 0;
-  font-family: inherit;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
+/* MODEL NAME (NEW) */
+.model-name {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+
+/* SCORES */
 .score-row {
   display: grid;
   grid-template-columns: 1fr 100px 100px;
@@ -86,15 +138,21 @@ pre {
   border-bottom: 1px dashed #e2e8f0;
 }
 
+.dark .score-row {
+  border-bottom: 1px dashed #334155;
+}
+
+/* MISC */
 .feedback-msg {
-  color: #166534;
+  color: #22c55e;
 }
 
 .meta-text {
-  color: #475569;
+  color: #64748b;
   font-size: 13px;
 }
 
+/* MOBILE */
 @media (max-width: 850px) {
   .responses {
     grid-template-columns: 1fr;
