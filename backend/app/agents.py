@@ -3,7 +3,7 @@ import os
 from typing import Any
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from groq import Groq
 from pydantic import ValidationError
 
 from .prompts import PROMPT_AGENT_A, PROMPT_AGENT_B, PROMPT_EVALUATOR
@@ -15,10 +15,10 @@ load_dotenv()
 
 class LLMClient:
     def __init__(self) -> None:
-        self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-        api_key = os.getenv("OPENAI_API_KEY")
+        self.model = "llama-3.1-8b-instant"
+        api_key = os.getenv("GROQ_API_KEY")
         self.enabled = bool(api_key)
-        self.client = OpenAI(api_key=api_key) if self.enabled else None
+        self.client = Groq(api_key=api_key) if self.enabled else None
 
     def complete(self, system_prompt: str, user_prompt: str, temperature: float = 0.2) -> str:
         if not self.enabled or self.client is None:
@@ -32,6 +32,7 @@ class LLMClient:
                 {"role": "user", "content": user_prompt},
             ],
         )
+
         return resp.choices[0].message.content or ""
 
     @staticmethod
@@ -51,9 +52,9 @@ class LLMClient:
                 "- Mock structured answer for testing\n"
                 "- Includes clearer formatting and practical explanation\n"
                 "- Example: This is where a real LLM answer appears\n"
-                "Takeaway: add OPENAI_API_KEY to enable live model output."
+                "- Now powered by Groq (free LLM)\n"
             )
-        return "Mock baseline answer for testing. Add OPENAI_API_KEY to get live outputs."
+        return "Mock baseline answer (Groq key missing). Add GROQ_API_KEY to get live outputs."
 
 
 llm_client = LLMClient()
@@ -91,7 +92,6 @@ def evaluate_responses(query: str, response_a: str, response_b: str) -> Evaluati
         parsed = _coerce_json_block(raw)
         return EvaluationResult.model_validate(parsed)
     except (ValueError, json.JSONDecodeError, ValidationError):
-        # Safe fallback keeps endpoint stable for UI + demos.
         return EvaluationResult(
             clarity_scores={"a": 5, "b": 5},
             completeness_scores={"a": 5, "b": 5},
